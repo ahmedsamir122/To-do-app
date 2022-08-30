@@ -39,19 +39,35 @@ const renderTasks = function (arrayTasks){
 tasksContainer.addEventListener('click', (e) => {
     const click = e.target.closest('.del');
     const done = e.target.closest('.task') ;
-    if(done){
-        done.classList.toggle('done');
+    
+    updateTask(done);
+
+    deleteTask(click);
+
+    console.log(tasks);
+})
+
+const updateTask = function(div) {
+    if(div){
+        div.classList.toggle('done');
     }
-    if(click) {
+    if(div.classList.contains('done')){
+         const index = tasks.findIndex(task => task.id === +div.dataset.id);
+         tasks[index].complete=true;
+    }
+    else {
+        const index = tasks.findIndex(task => task.id === +div.dataset.id);
+         tasks[index].complete=false;
+    }
+}
+
+const deleteTask =function(element){
+    if(element) {
         console.log('del');
-        const div = click.closest('.task')
+        const div = element.closest('.task')
         const idDiv = div.dataset.id;
         const index = tasks.findIndex(task => task.id===+idDiv);
         tasks.splice(index, 1)
         renderTasks(tasks);       
     }
-})
-
-const updateTask = function(div) {
-
 }
